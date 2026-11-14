@@ -42,6 +42,11 @@
   .msg li:nth-child(4) { animation-delay:3.6s; }
   .msg em { font-style:italic; color:#e85a6b; }
   .cue { margin:6px 0 0; font-style:italic; font-size:20px; color:#c99aa6; opacity:0; animation:fade 1.4s ease 4.4s forwards; }
+  .frame.tall { width:min(100%, 380px); }
+  .frame.tall video { aspect-ratio:9/16; max-height:none; }
+  .frame:not(.tall) video { aspect-ratio:16/9; }
+  .frame video { object-fit:cover; }
+  .frame + .frame { animation-delay:5.0s; }
   .frame {
     width:min(100%, 720px); border-radius:14px; overflow:hidden;
     box-shadow:0 24px 70px rgba(0,0,0,.65), 0 0 0 1px rgba(232,90,107,.22), 0 0 50px rgba(150,18,42,.25);
@@ -66,16 +71,24 @@
     </ul>
     <p class="cue">press play.</p>
   </header>
+  <div class="frame tall">
+    <video controls playsinline preload="metadata" poster="poster1.jpg">
+      <source src="video1.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="frame">
-    <video id="v" controls playsinline preload="metadata" poster="poster.jpg">
-      <source src="video.mp4" type="video/mp4">
+    <video controls playsinline preload="metadata" poster="poster2.jpg">
+      <source src="video2.mp4" type="video/mp4">
     </video>
   </div>
   <script>
-    // Until video.mp4 is uploaded, show a gentle placeholder instead of a broken player.
-    const v = document.getElementById('v');
-    v.querySelector('source').addEventListener('error', () => {
-      v.parentElement.innerHTML = '<div class="soon">something is on its way…</div>';
+    // Show a gentle placeholder if a video hasn't been uploaded yet.
+    document.querySelectorAll('.frame video').forEach(v => {
+      v.querySelector('source').addEventListener('error', () => {
+        v.parentElement.innerHTML = '<div class="soon">something is on its way…</div>';
+      });
+      // Only one plays at a time.
+      v.addEventListener('play', () => document.querySelectorAll('.frame video').forEach(o => { if (o !== v) o.pause(); }));
     });
   </script>
 </body>
