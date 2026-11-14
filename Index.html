@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>for you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#f4e4dc; --glow1:rgba(150,18,42,.42); --glow2:rgba(96,28,74,.45); }
+  * { box-sizing:border-box; }
+  html,body { margin:0; min-height:100%; }
+  body {
+    background:#0d0508;
+    color:var(--ink);
+    font-family:"Instrument Serif", Georgia, serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:100vh; padding:48px 20px 64px; gap:36px; overflow-x:hidden;
+  }
+  /* slow, soft drifting glow */
+  body::before, body::after {
+    content:""; position:fixed; width:70vmax; height:70vmax; border-radius:50%;
+    filter:blur(60px); z-index:-1; pointer-events:none;
+    animation:drift 22s ease-in-out infinite alternate;
+  }
+  body::before { background:radial-gradient(circle, var(--glow1), transparent 65%); top:-25vmax; left:-25vmax; }
+  body::after  { background:radial-gradient(circle, var(--glow2), transparent 65%); bottom:-30vmax; right:-25vmax; animation-delay:-11s; }
+  @keyframes drift { to { transform:translate(12vmax, 8vmax) scale(1.1); } }
+  @media (prefers-reduced-motion: reduce) { body::before, body::after { animation:none; } }
+
+  .msg { max-width:620px; text-align:center; display:flex; flex-direction:column; gap:14px; }
+  h1 {
+    margin:0; font-weight:400; font-size:clamp(34px, 8vw, 56px); line-height:1.1;
+    opacity:0; animation:fade 1.6s ease .3s forwards;
+  }
+  .msg ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;
+    font-size:clamp(22px, 5vw, 32px); line-height:1.25; }
+  .msg li { opacity:0; animation:fade 1.4s ease forwards; }
+  .msg li:nth-child(1) { animation-delay:1.2s; }
+  .msg li:nth-child(2) { animation-delay:2.0s; }
+  .msg li:nth-child(3) { animation-delay:2.8s; }
+  .msg li:nth-child(4) { animation-delay:3.6s; }
+  .msg em { font-style:italic; color:#e85a6b; }
+  .cue { margin:6px 0 0; font-style:italic; font-size:20px; color:#c99aa6; opacity:0; animation:fade 1.4s ease 4.4s forwards; }
+  .frame {
+    width:min(100%, 720px); border-radius:14px; overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.65), 0 0 0 1px rgba(232,90,107,.22), 0 0 50px rgba(150,18,42,.25);
+    opacity:0; animation:fade 1.8s ease 4.6s forwards; background:#000;
+  }
+  video { display:block; width:100%; height:auto; max-height:78vh; background:#000; }
+  .soon {
+    aspect-ratio:9/16; max-height:70vh; display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:24px; font-style:italic; font-size:22px; color:#c99aa6; margin:0 auto;
+  }
+  @keyframes fade { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+  <header class="msg">
+    <h1>If you ever forget&hellip;</h1>
+    <ul>
+      <li>how <em>wonderful</em> you are,</li>
+      <li>how <em>absolutely capable</em> you are of anything,</li>
+      <li>how much <em>we love you</em>,</li>
+      <li>and that <em>we&rsquo;re here</em> whenever you ask&nbsp;&mdash;</li>
+    </ul>
+    <p class="cue">press play.</p>
+  </header>
+  <div class="frame">
+    <video id="v" controls playsinline preload="metadata" poster="poster.jpg">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <script>
+    // Until video.mp4 is uploaded, show a gentle placeholder instead of a broken player.
+    const v = document.getElementById('v');
+    v.querySelector('source').addEventListener('error', () => {
+      v.parentElement.innerHTML = '<div class="soon">something is on its way…</div>';
+    });
+  </script>
+</body>
+</html>
