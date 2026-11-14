@@ -1,4 +1,4 @@
-# Vaish_Encouragement_and_Support_Video_Website
+# Vaish Encouragement and Support Video Website
 
 This Repo is a gift for Vaish when she's having a hard time. She feels at time that she wishes people would listen more. SHe feels like she's exhausted from the demands of work life and preparing for Vet school. 
 Sometimes, if she gets rejecteed, she feels very demotivated andblames everything on herself. 
